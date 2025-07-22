@@ -74,8 +74,8 @@ myFunction("Hello world");
 
 ```js
 import {
-  myVariable,
   myFunction,
+  myVariable,
 } from "exports-loader?exports=myVariable,myFunction!./file.js";
 // Adds the following code to the file's source:
 //
@@ -85,7 +85,7 @@ import {
 //
 // export { myVariable, myFunction };
 
-const newVariable = myVariable + "!!!";
+const newVariable = `${myVariable  }!!!`;
 
 console.log(newVariable);
 
@@ -617,7 +617,7 @@ Generate output:
 // Code
 // ...
 
-module.exports = { Foo, Bar, BazA: Bar };
+module.exports = { Bar, BazA: Bar, Foo };
 ```
 
 ###### ES Module Default Export And Named Exports Together
