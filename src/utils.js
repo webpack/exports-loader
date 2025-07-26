@@ -5,10 +5,7 @@ function forError(item) {
 }
 
 function splitCommand(command) {
-  const result = command
-    .split("|")
-    .map((item) => item.split(" "))
-    .reduce((acc, val) => acc.concat(val), []);
+  const result = command.split("|").flatMap((item) => item.split(" "));
 
   for (const item of result) {
     if (!item) {
@@ -41,7 +38,7 @@ function resolveExports(type, item) {
       result = {
         syntax: type === "module" ? "named" : "multiple",
         name: splittedItem[0],
-        // eslint-disable-next-line no-undefined
+
         alias: undefined,
       };
     } else {
@@ -49,7 +46,6 @@ function resolveExports(type, item) {
         syntax: splittedItem[0],
         name: splittedItem[1],
         alias:
-          // eslint-disable-next-line no-undefined
           typeof splittedItem[2] !== "undefined" ? splittedItem[2] : undefined,
       };
     }
@@ -74,24 +70,26 @@ function resolveExports(type, item) {
     );
   }
 
-  if (type === "commonjs") {
-    if (result.syntax === "default" || result.syntax === "named") {
-      throw new Error(
-        `The "${type}" format can't be used with the "${
-          result.syntax
-        }" syntax export in "${forError(item)}" value`,
-      );
-    }
+  if (
+    type === "commonjs" &&
+    (result.syntax === "default" || result.syntax === "named")
+  ) {
+    throw new Error(
+      `The "${type}" format can't be used with the "${
+        result.syntax
+      }" syntax export in "${forError(item)}" value`,
+    );
   }
 
-  if (type === "module") {
-    if (result.syntax === "single" || result.syntax === "multiple") {
-      throw new Error(
-        `The "${type}" format can't be used with the "${
-          result.syntax
-        }" syntax export in "${forError(item)}" value`,
-      );
-    }
+  if (
+    type === "module" &&
+    (result.syntax === "single" || result.syntax === "multiple")
+  ) {
+    throw new Error(
+      `The "${type}" format can't be used with the "${
+        result.syntax
+      }" syntax export in "${forError(item)}" value`,
+    );
   }
 
   return result;
@@ -111,18 +109,21 @@ function getIdentifiers(array) {
   }, []);
 }
 
+function duplicateBy(array, key) {
+  return array.filter((a, aIndex) =>
+    array.some((b, bIndex) => b[key] === a[key] && aIndex !== bIndex),
+  );
+}
+
 function getExports(type, exports) {
-  let result;
   const exportItems =
     typeof exports === "string" && exports.includes(",")
       ? exports.split(",")
       : exports;
 
-  if (Array.isArray(exportItems)) {
-    result = exportItems.map((item) => resolveExports(type, item));
-  } else {
-    result = [resolveExports(type, exportItems)];
-  }
+  const result = Array.isArray(exportItems)
+    ? exportItems.map((item) => resolveExports(type, item))
+    : [resolveExports(type, exportItems)];
 
   const hasMultipleDefault = result.filter(
     ({ syntax }) => syntax === "default" || syntax === "single",
@@ -154,14 +155,6 @@ function getExports(type, exports) {
   return result;
 }
 
-function duplicateBy(array, key) {
-  return array.filter(
-    (a, aIndex) =>
-      array.filter((b, bIndex) => b[key] === a[key] && aIndex !== bIndex)
-        .length > 0,
-  );
-}
-
 function renderExports(loaderContext, type, exports) {
   let code = "";
 
@@ -173,7 +166,6 @@ function renderExports(loaderContext, type, exports) {
   );
 
   if (defaultExport.length > 0) {
-    // eslint-disable-next-line default-case
     switch (type) {
       case "commonjs":
         code += "module.exports = ";
@@ -187,7 +179,6 @@ function renderExports(loaderContext, type, exports) {
   }
 
   if (namedExports.length > 0) {
-    // eslint-disable-next-line default-case
     switch (type) {
       case "commonjs":
         code += "module.exports = {\n";
@@ -197,10 +188,10 @@ function renderExports(loaderContext, type, exports) {
         break;
     }
 
-    namedExports.forEach((namedExport, i) => {
+    for (const [i, namedExport] of namedExports.entries()) {
       const needComma = i < namedExports.length - 1;
       const { name } = namedExport;
-      // eslint-disable-next-line no-undefined
+
       const alias = namedExport.alias || undefined;
 
       code += `  ${
@@ -210,7 +201,7 @@ function renderExports(loaderContext, type, exports) {
             : `${name}`
           : `${name}${alias ? ` as ${alias}` : ""}`
       }${needComma ? ",\n" : ""}`;
-    });
+    }
 
     code += "\n};\n";
   }

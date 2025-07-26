@@ -1,4 +1,4 @@
-import path from "path";
+import path from "node:path";
 
 import {
   compile,
@@ -107,7 +107,6 @@ describe("loader", () => {
   });
 
   it("should work with inline syntax", async () => {
-    // eslint-disable-next-line no-undefined
     const compiler = getCompiler("inline.js", {}, { module: undefined });
     const stats = await compile(compiler);
 

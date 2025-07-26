@@ -1,4 +1,4 @@
-import { getCompiler, compile } from "./helpers";
+import { compile, getCompiler } from "./helpers";
 
 describe("validate options", () => {
   const tests = {
@@ -63,7 +63,6 @@ describe("validate options", () => {
     it(`should ${
       type === "success" ? "successfully validate" : "throw an error on"
     } the "${key}" option with "${stringifyValue(value)}" value`, async () => {
-      // eslint-disable-next-line no-shadow
       const getOptions = (key, value) => {
         if (key === "type") {
           return { [key]: value, exports: "Foo" };
@@ -75,14 +74,13 @@ describe("validate options", () => {
           if (typeof value === "string") {
             isModule = value.includes("default") || value.includes("named");
           } else if (Array.isArray(value)) {
-            isModule =
-              value.filter((item) =>
-                typeof item === "string"
-                  ? item.includes("default") || item.includes("named")
-                  : item.syntax
-                    ? item.syntax === "default" || item.syntax === "named"
-                    : false,
-              ).length > 0;
+            isModule = value.some((item) =>
+              typeof item === "string"
+                ? item.includes("default") || item.includes("named")
+                : item.syntax
+                  ? item.syntax === "default" || item.syntax === "named"
+                  : false,
+            );
           } else {
             isModule =
               value.syntax &&
