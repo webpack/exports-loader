@@ -85,7 +85,7 @@ import {
 //
 // export { myVariable, myFunction };
 
-const newVariable = `${myVariable  }!!!`;
+const newVariable = `${myVariable}!!!`;
 
 console.log(newVariable);
 
@@ -247,6 +247,8 @@ module.exports = {
 
 Generate output:
 
+<!-- eslint-skip -->
+
 ```js
 // ...
 // Code
@@ -273,7 +275,6 @@ The `|` or `%20` (space) allow to separate the `syntax`, `name` and `alias` of e
 String syntax - `[[syntax] [name] [alias]]` or `[[syntax]|[name]|[alias]]`, where:
 
 - `[syntax]` (**may be omitted**) -
-
   - if `type` is `module`- can be `default` and `named`,
   - if `type` is `commonjs`- can be `single` and `multiple`
 
@@ -352,6 +353,8 @@ module.exports = {
 ```
 
 Generate output:
+
+<!-- eslint-skip -->
 
 ```js
 // ...
@@ -493,6 +496,8 @@ module.exports = {
 ```
 
 Generate output:
+
+<!-- eslint-skip -->
 
 ```js
 // ...
@@ -642,6 +647,8 @@ module.exports = {
 
 Generate output:
 
+<!-- eslint-skip -->
+
 ```js
 // ...
 // Code
@@ -676,6 +683,8 @@ module.exports = {
 ```
 
 Generate output:
+
+<!-- eslint-skip -->
 
 ```js
 // ...
