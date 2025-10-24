@@ -578,7 +578,7 @@ module.exports = { FooA: Foo };
 
 #### `Array`
 
-Allow to specify multiple exports. Each item can be a [`string`](https://github.com/webpack-contrib/exports-loader#string) or an [`object`](https://github.com/webpack-contrib/exports-loader#object).
+Allow to specify multiple exports. Each item can be a [`string`](https://github.com/webpack/exports-loader#string) or an [`object`](https://github.com/webpack/exports-loader#object).
 
 > [!WARNING]
 >
@@ -710,10 +710,10 @@ If you're new here, please take a moment to review our contributing guidelines.
 [npm-url]: https://npmjs.com/package/exports-loader
 [node]: https://img.shields.io/node/v/exports-loader.svg
 [node-url]: https://nodejs.org
-[tests]: https://github.com/webpack-contrib/exports-loader/workflows/exports-loader/badge.svg
-[tests-url]: https://github.com/webpack-contrib/exports-loader/actions
-[cover]: https://codecov.io/gh/webpack-contrib/exports-loader/branch/master/graph/badge.svg
-[cover-url]: https://codecov.io/gh/webpack-contrib/exports-loader
+[tests]: https://github.com/webpack/exports-loader/workflows/exports-loader/badge.svg
+[tests-url]: https://github.com/webpack/exports-loader/actions
+[cover]: https://codecov.io/gh/webpack/exports-loader/branch/main/graph/badge.svg
+[cover-url]: https://codecov.io/gh/webpack/exports-loader
 [discussion]: https://img.shields.io/github/discussions/webpack/webpack
 [discussion-url]: https://github.com/webpack/webpack/discussions
 [size]: https://packagephobia.now.sh/badge?p=exports-loader
