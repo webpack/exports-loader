@@ -5,9 +5,9 @@
   "keywords": [
     "webpack"
   ],
-  "homepage": "https://github.com/webpack-contrib/exports-loader",
-  "bugs": "https://github.com/webpack-contrib/exports-loader/issues",
-  "repository": "webpack-contrib/exports-loader",
+  "homepage": "https://github.com/webpack/exports-loader",
+  "bugs": "https://github.com/webpack/exports-loader/issues",
+  "repository": "webpack/exports-loader",
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/webpack"
@@ -23,7 +23,7 @@
     "clean": "del-cli dist",
     "prebuild": "npm run clean",
     "build": "cross-env NODE_ENV=production babel src -d dist --copy-files",
-    "commitlint": "commitlint --from=master",
+    "commitlint": "commitlint --from=main",
     "security": "npm audit --production",
     "lint:prettier": "prettier --cache --list-different .",
     "lint:js": "eslint --cache .",

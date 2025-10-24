@@ -40,7 +40,7 @@
     "type": {
       "enum": ["commonjs", "module"],
       "description": "Format of generated exports.",
-      "link": "https://github.com/webpack-contrib/exports-loader#type"
+      "link": "https://github.com/webpack/exports-loader#type"
     },
     "exports": {
       "anyOf": [
@@ -60,7 +60,7 @@
         }
       ],
       "description": "List of exports.",
-      "link": "https://github.com/webpack-contrib/exports-loader#exports"
+      "link": "https://github.com/webpack/exports-loader#exports"
     }
   },
   "required": ["exports"]
