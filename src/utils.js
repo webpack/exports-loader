@@ -209,4 +209,71 @@ function renderExports(loaderContext, type, exports) {
   return code;
 }
 
-export { getExports, renderExports };
+const NATIVE_EXPORTS_WEBPACK_VERSION = [5, 111, 0];
+
+const warnedCompilations = new WeakMap();
+
+function supportsNativeExports(loaderContext) {
+  const compiler = loaderContext._compiler;
+  const version = compiler && compiler.webpack && compiler.webpack.version;
+
+  if (typeof version !== "string") {
+    return false;
+  }
+
+  const [major, minor, patch] = version
+    .split(".")
+    .map((part) => Number.parseInt(part, 10));
+  const [minMajor, minMinor, minPatch] = NATIVE_EXPORTS_WEBPACK_VERSION;
+
+  if (major !== minMajor) {
+    return major > minMajor;
+  }
+
+  if (minor !== minMinor) {
+    return minor > minMinor;
+  }
+
+  return patch >= minPatch;
+}
+
+function warnDeprecation(loaderContext, exports) {
+  if (!supportsNativeExports(loaderContext)) {
+    return;
+  }
+
+  const value = exports.map(({ syntax, name, alias }) =>
+    typeof alias === "undefined"
+      ? `${syntax} ${name}`
+      : `${syntax} ${name} ${alias}`,
+  );
+  const option = JSON.stringify(value.length === 1 ? value[0] : value);
+  const message = `"exports-loader" is deprecated, webpack adds exports itself since v${NATIVE_EXPORTS_WEBPACK_VERSION.join(".")}.
+Replace the loader in the rule with the "exports" parser option:
+
+  { test: /\\.js$/, parser: { exports: ${option} } }
+
+More information: https://github.com/webpack/exports-loader#deprecation`;
+
+  const compilation = loaderContext._compilation;
+
+  // one warning per rule, not per module the rule matched
+  if (compilation) {
+    let messages = warnedCompilations.get(compilation);
+
+    if (!messages) {
+      messages = new Set();
+      warnedCompilations.set(compilation, messages);
+    }
+
+    if (messages.has(message)) {
+      return;
+    }
+
+    messages.add(message);
+  }
+
+  loaderContext.emitWarning(new Error(message));
+}
+
+export { getExports, renderExports, warnDeprecation };

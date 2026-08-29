@@ -5,7 +5,7 @@
 import { SourceMapConsumer, SourceNode } from "source-map";
 
 import schema from "./options.json";
-import { getExports, renderExports } from "./utils";
+import { getExports, renderExports, warnDeprecation } from "./utils";
 
 const FOOTER = "/*** EXPORTS FROM exports-loader ***/\n";
 
@@ -23,6 +23,8 @@ export default function loader(content, sourceMap) {
 
     return;
   }
+
+  warnDeprecation(this, exports);
 
   const exportsCode = renderExports(this, type, exports);
 

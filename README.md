@@ -13,6 +13,10 @@
 
 # exports-loader
 
+> [!CAUTION]
+>
+> This loader is deprecated. webpack adds exports itself since `v5.111.0` — see [Deprecation](#deprecation) for how to migrate.
+
 Allows you to set up exports using `module.exports` or `export` for source files.
 
 Useful when a source file does not contain exports or when something is not exported.
@@ -26,6 +30,61 @@ For more information on compatibility issues, refer to the [Shimming](https://we
 > [!WARNING]
 >
 > Be careful: modifying existing exports (`export`, `module.exports`, or `exports`) or adding new exports can lead to errors.
+
+## Deprecation
+
+webpack adds exports itself since `v5.111.0`, through the `exports` parser option, so this loader is deprecated and only receives bug fixes from now on. Running it on webpack `>= 5.111.0` prints a warning naming the option to replace it with.
+
+The option takes the same values as the loader, with one difference: there is no `type`, because the syntax keyword already decides the format — `default` and `named` generate ES module exports, `single` and `multiple` generate CommonJs exports, and a bare name means `named`.
+
+| `exports-loader` options                                       | `parser.exports` value            |
+| :------------------------------------------------------------- | :-------------------------------- |
+| `{ exports: "Foo" }`                                           | `"Foo"`                           |
+| `{ exports: "named Foo FooA" }`                                | `"named Foo FooA"`                |
+| `{ exports: ["named Foo", "named Bar BarA"] }`                 | `["named Foo", "named Bar BarA"]` |
+| `{ exports: { syntax: "named", name: "Foo", alias: "FooA" } }` | the same object                   |
+| `{ type: "module", exports: "default Foo" }`                   | `"default Foo"`                   |
+| `{ type: "commonjs", exports: "Foo" }`                         | `"multiple Foo"`                  |
+| `{ type: "commonjs", exports: "single Foo" }`                  | `"single Foo"`                    |
+
+**webpack.config.js (before)**
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: require.resolve("./path/to/vendor.js"),
+        loader: "exports-loader",
+        options: { type: "commonjs", exports: "single Foo" },
+      },
+    ],
+  },
+};
+```
+
+**webpack.config.js (after)**
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: require.resolve("./path/to/vendor.js"),
+        parser: { exports: "single Foo" },
+      },
+    ],
+  },
+};
+```
+
+The option is also available for every module at once, as `module.parser.javascript.exports`.
+
+Two things behave better afterwards, and one has no equivalent:
+
+- The exports enter the module graph instead of the source, so ES module exports take part in tree shaking, mangling, const inlining and scope hoisting, and an unused CommonJs export is dropped from the generated object.
+- A name the module does not declare is a build error instead of code that throws at runtime.
+- Inline usage (`exports-loader?exports=Foo!./file.js`) has no counterpart — the option is set on a rule, so match the file with `test`, `include` or `resourceQuery` instead.
 
 ## Getting Started
 

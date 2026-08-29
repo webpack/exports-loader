@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`deprecation should not warn when webpack does not add exports itself: errors 1`] = `[]`;
+
+exports[`deprecation should print the replacement for a single export: errors 1`] = `[]`;
+
+exports[`deprecation should print the replacement for multiple exports: errors 1`] = `[]`;
+
+exports[`deprecation should print the syntax a bare name got from the type: errors 1`] = `[]`;
+
+exports[`deprecation should warn once per rule, not once per module: errors 1`] = `[]`;
+
+exports[`deprecation should warn when webpack adds exports itself: errors 1`] = `[]`;
+
+exports[`deprecation should warn when webpack adds exports itself: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated, webpack adds exports itself since v5.111.0.",
+]
+`;
