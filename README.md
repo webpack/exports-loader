@@ -35,25 +35,21 @@ For more information on compatibility issues, refer to the [Shimming](https://we
 
 webpack adds exports itself since `v5.111.0`, through the `exports` parser option, so this loader is deprecated and only receives bug fixes from now on. Running it on webpack `>= 5.111.0` prints a warning naming the option to replace it with.
 
-The option takes the same values as the loader, with three differences:
+The option is a map from the name of the export to the expression in the module it reads, `default` being the value of the module itself. A string or an array of strings exports each name under itself. There are no `syntax` keywords and no `type`: how the exports are generated follows the module, so a script gets CommonJs exports and an ES module gets ES module exports — `type: "javascript/esm"` on the rule is what asks for the latter.
 
-- there is no `type`, because the syntax keyword already decides the format — `default` and `named` generate ES module exports, `single` and `multiple` generate CommonJs exports, and a bare name means `named`;
-- the syntax, name and alias are separated by a space, not by `|` — that separator only existed because a loader query string cannot contain spaces;
-- several exports are an array, not a comma-separated string, for the same reason.
+| `exports-loader` options                             | `parser.exports` value        | rule also needs          |
+| :--------------------------------------------------- | :---------------------------- | :----------------------- |
+| `{ type: "commonjs", exports: "single Foo" }`        | `{ default: "Foo" }`          |                          |
+| `{ type: "commonjs", exports: "Foo" }`               | `"Foo"`                       |                          |
+| `{ type: "commonjs", exports: "multiple Foo FooA" }` | `{ FooA: "Foo" }`             |                          |
+| `{ exports: "default Foo" }`                         | `{ default: "Foo" }`          | `type: "javascript/esm"` |
+| `{ exports: "Foo" }`                                 | `"Foo"`                       | `type: "javascript/esm"` |
+| `{ exports: "named Foo FooA" }`                      | `{ FooA: "Foo" }`             | `type: "javascript/esm"` |
+| `{ exports: ["named Foo", "named Bar BarA"] }`       | `{ Foo: "Foo", BarA: "Bar" }` | `type: "javascript/esm"` |
+| `{ exports: "named\|Foo\|FooA" }`                    | `{ FooA: "Foo" }`             | `type: "javascript/esm"` |
+| `{ exports: "named Foo,named Bar" }`                 | `["Foo", "Bar"]`              | `type: "javascript/esm"` |
 
-Both dropped forms are rejected with an error naming the replacement, and the deprecation warning always prints the migrated value, so there is nothing to work out by hand.
-
-| `exports-loader` options                                       | `parser.exports` value            |
-| :------------------------------------------------------------- | :-------------------------------- |
-| `{ exports: "Foo" }`                                           | `"Foo"`                           |
-| `{ exports: "named Foo FooA" }`                                | `"named Foo FooA"`                |
-| `{ exports: ["named Foo", "named Bar BarA"] }`                 | `["named Foo", "named Bar BarA"]` |
-| `{ exports: { syntax: "named", name: "Foo", alias: "FooA" } }` | the same object                   |
-| `{ type: "module", exports: "default Foo" }`                   | `"default Foo"`                   |
-| `{ type: "commonjs", exports: "Foo" }`                         | `"multiple Foo"`                  |
-| `{ type: "commonjs", exports: "single Foo" }`                  | `"single Foo"`                    |
-| `{ exports: "named\|Foo\|FooA" }`                              | `"named Foo FooA"`                |
-| `{ exports: "named Foo,named Bar" }`                           | `["named Foo", "named Bar"]`      |
+The `type: "javascript/esm"` column is only needed where the file is not already an ES module: a file with its own `import`/`export` gets ES module exports either way. The deprecation warning prints the whole replacement, including that line where it applies.
 
 **webpack.config.js (before)**
 
@@ -79,7 +75,7 @@ module.exports = {
     rules: [
       {
         test: require.resolve("./path/to/vendor.js"),
-        parser: { exports: "single Foo" },
+        parser: { exports: { default: "Foo" } },
       },
     ],
   },
@@ -91,8 +87,8 @@ The option is also available for every module at once, as `module.parser.javascr
 Three things behave better afterwards, and one has no equivalent:
 
 - The exports enter the module graph instead of the source, so ES module exports take part in tree shaking, mangling, const inlining and scope hoisting, and an unused CommonJs export is dropped from the generated object.
-- A name the module does not declare is a build error instead of code that throws at runtime, and a name that is not an identifier or a member expression (`Foo.Bar`) is rejected rather than spliced into the output.
-- An ES module export accepts what the generated `export { … }` could not: a member expression (`default Foo.Bar`) and an alias that is not an identifier (`named Foo Foo-Bar`).
+- A name the module does not declare is a build error instead of code that throws at runtime, and an expression that is not an identifier or a member expression (`Foo.Bar`) is rejected rather than spliced into the output.
+- An ES module export accepts what the generated `export { … }` could not: a member expression (`{ create: "Widget.create" }`) and an export name that is not an identifier (`{ "Foo-Bar": "Foo" }`).
 - Inline usage (`exports-loader?exports=Foo!./file.js`) has no counterpart — the option is set on a rule, so match the file with `test`, `include` or `resourceQuery` instead.
 
 ## Getting Started

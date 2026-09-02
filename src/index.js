@@ -24,7 +24,7 @@ export default function loader(content, sourceMap) {
     return;
   }
 
-  warnDeprecation(this, exports);
+  warnDeprecation(this, type, exports);
 
   const exportsCode = renderExports(this, type, exports);
 

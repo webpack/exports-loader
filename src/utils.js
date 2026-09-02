@@ -237,21 +237,35 @@ function supportsNativeExports(loaderContext) {
   return patch >= minPatch;
 }
 
-function warnDeprecation(loaderContext, exports) {
+function warnDeprecation(loaderContext, type, exports) {
   if (!supportsNativeExports(loaderContext)) {
     return;
   }
 
-  const value = exports.map(({ syntax, name, alias }) =>
-    typeof alias === "undefined"
-      ? `${syntax} ${name}`
-      : `${syntax} ${name} ${alias}`,
+  const value = {};
+
+  for (const { syntax, name, alias } of exports) {
+    // the option has one name for the module's own value, whatever the format
+    const exportName =
+      syntax === "default" || syntax === "single" ? "default" : alias || name;
+
+    value[exportName] = name;
+  }
+
+  const names = Object.keys(value);
+  const isShorthand = names.every((name) => value[name] === name);
+  const option = JSON.stringify(
+    isShorthand ? (names.length === 1 ? names[0] : names) : value,
   );
-  const option = JSON.stringify(value.length === 1 ? value[0] : value);
+  // a script gets CommonJs exports, so ES module exports ask for the ES module type
+  const moduleType = type === "module" ? '\n    type: "javascript/esm",' : "";
   const message = `"exports-loader" is deprecated, webpack adds exports itself since v${NATIVE_EXPORTS_WEBPACK_VERSION.join(".")}.
 Replace the loader in the rule with the "exports" parser option:
 
-  { test: /\\.js$/, parser: { exports: ${option} } }
+  {
+    test: /\\.js$/,${moduleType}
+    parser: { exports: ${option} }
+  }
 
 More information: https://github.com/webpack/exports-loader#deprecation`;
 

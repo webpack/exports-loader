@@ -31,12 +31,15 @@ describe("deprecation", () => {
 
     expect(getWarnings(stats)).toMatchSnapshot("warnings");
     expect(stats.compilation.warnings[0].message).toContain(
-      'parser: { exports: "named Foo" }',
+      'parser: { exports: "Foo" }',
+    );
+    expect(stats.compilation.warnings[0].message).toContain(
+      'type: "javascript/esm"',
     );
     expect(getErrors(stats)).toMatchSnapshot("errors");
   });
 
-  it("should print the replacement for a single export", async () => {
+  it("should print the replacement for the module's own value", async () => {
     const compiler = setWebpackVersion(
       getCompiler("simple.js", {
         type: "commonjs",
@@ -47,13 +50,16 @@ describe("deprecation", () => {
     const stats = await compile(compiler);
 
     expect(stats.compilation.warnings[0].message).toContain(
-      'parser: { exports: "single Foo" }',
+      'parser: { exports: {"default":"Foo"} }',
+    );
+    // a script needs no type, its CommonJs exports are the default
+    expect(stats.compilation.warnings[0].message).not.toContain(
+      'type: "javascript/esm"',
     );
     expect(getErrors(stats)).toMatchSnapshot("errors");
   });
 
-  // the option has no "type", so a bare name resolves to the syntax "type" implied
-  it("should print the syntax a bare name got from the type", async () => {
+  it("should print a bare name as a shorthand", async () => {
     const compiler = setWebpackVersion(
       getCompiler("simple.js", { type: "commonjs", exports: "Foo" }),
       "5.111.0",
@@ -61,7 +67,7 @@ describe("deprecation", () => {
     const stats = await compile(compiler);
 
     expect(stats.compilation.warnings[0].message).toContain(
-      'parser: { exports: "multiple Foo" }',
+      'parser: { exports: "Foo" }',
     );
     expect(getErrors(stats)).toMatchSnapshot("errors");
   });
@@ -76,7 +82,7 @@ describe("deprecation", () => {
     const stats = await compile(compiler);
 
     expect(stats.compilation.warnings[0].message).toContain(
-      'parser: { exports: ["named Foo","named Bar BarA"] }',
+      'parser: { exports: {"Foo":"Foo","BarA":"Bar"} }',
     );
     expect(getErrors(stats)).toMatchSnapshot("errors");
   });
