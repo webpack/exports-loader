@@ -15,7 +15,7 @@
 
 > [!CAUTION]
 >
-> This loader is deprecated. webpack adds exports itself since `v5.111.0` — see [Deprecation](#deprecation) for how to migrate.
+> This loader is deprecated. What it does is a few lines of plugin over webpack's public API — see [Deprecation](#deprecation) for the recipe.
 
 Allows you to set up exports using `module.exports` or `export` for source files.
 
@@ -33,64 +33,60 @@ For more information on compatibility issues, refer to the [Shimming](https://we
 
 ## Deprecation
 
-webpack adds exports itself since `v5.111.0`, through the `exports` parser option, so this loader is deprecated and only receives bug fixes from now on. Running it on webpack `>= 5.111.0` prints a warning naming the option to replace it with.
+This loader is deprecated and only receives bug fixes from now on. What it does — appending exports to a file that has none — is a few lines of plugin over webpack's public API, so it does not need a package. Running it prints a warning with the exact code it appends and a link to the example below.
 
-The option is a map from the name of the export to the expression in the module it reads, `default` being the value of the module itself. A string or an array of strings exports each name under itself. There are no `syntax` keywords and no `type`: how the exports are generated follows the module, so a script gets CommonJs exports and an ES module gets ES module exports — `type: "javascript/esm"` on the rule is what asks for the latter.
+webpack's [add-exports example](https://github.com/webpack/webpack/tree/main/examples/add-exports) is the whole recipe. `NormalModule`'s `processResult` hook hands a plugin what the loaders produced and takes back a replacement:
 
-| `exports-loader` options                             | `parser.exports` value        | rule also needs          |
-| :--------------------------------------------------- | :---------------------------- | :----------------------- |
-| `{ type: "commonjs", exports: "single Foo" }`        | `{ default: "Foo" }`          |                          |
-| `{ type: "commonjs", exports: "Foo" }`               | `"Foo"`                       |                          |
-| `{ type: "commonjs", exports: "multiple Foo FooA" }` | `{ FooA: "Foo" }`             |                          |
-| `{ exports: "default Foo" }`                         | `{ default: "Foo" }`          | `type: "javascript/esm"` |
-| `{ exports: "Foo" }`                                 | `"Foo"`                       | `type: "javascript/esm"` |
-| `{ exports: "named Foo FooA" }`                      | `{ FooA: "Foo" }`             | `type: "javascript/esm"` |
-| `{ exports: ["named Foo", "named Bar BarA"] }`       | `{ Foo: "Foo", BarA: "Bar" }` | `type: "javascript/esm"` |
-| `{ exports: "named\|Foo\|FooA" }`                    | `{ FooA: "Foo" }`             | `type: "javascript/esm"` |
-| `{ exports: "named Foo,named Bar" }`                 | `["Foo", "Bar"]`              | `type: "javascript/esm"` |
+```js
+const { NormalModule } = require("webpack");
 
-The `type: "javascript/esm"` column is only needed where the file is not already an ES module: a file with its own `import`/`export` gets ES module exports either way. The deprecation warning prints the whole replacement, including that line where it applies.
+class AddExportsPlugin {
+  constructor(exports) {
+    this.exports = exports;
+  }
 
-**webpack.config.js (before)**
+  apply(compiler) {
+    compiler.hooks.compilation.tap("AddExportsPlugin", (compilation) => {
+      NormalModule.getCompilationHooks(compilation).processResult.tap(
+        "AddExportsPlugin",
+        (result, module) => {
+          const [source, sourceMap] = result;
+
+          for (const [test, code] of this.exports) {
+            if (!module.resource || !test.test(module.resource)) continue;
+
+            // appending moves nothing before it, so the source map still fits;
+            // an ast from a loader would be parsed instead of the appended code
+            return [`${source}\n${code}`, sourceMap, undefined];
+          }
+
+          return result;
+        },
+      );
+    });
+  }
+}
+```
+
+**webpack.config.js**
 
 ```js
 module.exports = {
-  module: {
-    rules: [
-      {
-        test: require.resolve("./path/to/vendor.js"),
-        loader: "exports-loader",
-        options: { type: "commonjs", exports: "single Foo" },
-      },
-    ],
-  },
+  plugins: [
+    new AddExportsPlugin([
+      [/vendor\.js$/, "module.exports = Foo;"],
+      [/math\.js$/, "export { add, PI };"],
+    ]),
+  ],
 };
 ```
 
-**webpack.config.js (after)**
+The code to append is the code this loader generates, which its warning prints — `module.exports = Foo;` for `{ type: "commonjs", exports: "single Foo" }`, `export { Foo };` for `{ exports: "Foo" }`, and so on. Two things follow from webpack parsing it itself:
 
-```js
-module.exports = {
-  module: {
-    rules: [
-      {
-        test: require.resolve("./path/to/vendor.js"),
-        parser: { exports: { default: "Foo" } },
-      },
-    ],
-  },
-};
-```
+- The exports are the module's own, so they take part in tree shaking, mangling, const inlining and scope hoisting.
+- Appending an `export` is what makes a file an ES module, exactly as it would be in the source, so there is no `type` to choose — write the format the file should have.
 
-The option is also available for every module at once, as `module.parser.javascript.exports`.
-
-Four things behave better afterwards, and one has no equivalent:
-
-- The exports enter the module graph instead of the source, so ES module exports take part in tree shaking, mangling, const inlining and scope hoisting, and an unused CommonJs export is dropped from the generated object.
-- Named exports are added to the module's exports rather than replacing them, so a file that exports something itself — an AMD `define`, an `exports.x`, its own `module.exports =` — keeps it. The loader's generated `module.exports = { … }` overwrites all three.
-- A name the module does not declare is a build error instead of code that throws at runtime, and an expression that is not an identifier or a member expression (`Foo.Bar`) is rejected rather than spliced into the output.
-- An ES module export accepts what the generated `export { … }` could not: a member expression (`{ create: "Widget.create" }`) and an export name that is not an identifier (`{ "Foo-Bar": "Foo" }`).
-- Inline usage (`exports-loader?exports=Foo!./file.js`) has no counterpart — the option is set on a rule, so match the file with `test`, `include` or `resourceQuery` instead.
+Inline usage (`exports-loader?exports=Foo!./file.js`) has no counterpart: the plugin matches on the resource, so use a condition on the path instead.
 
 ## Getting Started
 

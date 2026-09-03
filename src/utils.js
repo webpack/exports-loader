@@ -209,65 +209,22 @@ function renderExports(loaderContext, type, exports) {
   return code;
 }
 
-const NATIVE_EXPORTS_WEBPACK_VERSION = [5, 111, 0];
+const EXAMPLE_URL =
+  "https://github.com/webpack/webpack/tree/main/examples/add-exports";
 
 const warnedCompilations = new WeakMap();
 
-function supportsNativeExports(loaderContext) {
-  const compiler = loaderContext._compiler;
-  const version = compiler && compiler.webpack && compiler.webpack.version;
+function warnDeprecation(loaderContext, code) {
+  const message = `"exports-loader" is deprecated. It appends this to the module:
 
-  if (typeof version !== "string") {
-    return false;
-  }
+${code
+  .split("\n")
+  .filter(Boolean)
+  .map((line) => `  ${line}`)
+  .join("\n")}
 
-  const [major, minor, patch] = version
-    .split(".")
-    .map((part) => Number.parseInt(part, 10));
-  const [minMajor, minMinor, minPatch] = NATIVE_EXPORTS_WEBPACK_VERSION;
-
-  if (major !== minMajor) {
-    return major > minMajor;
-  }
-
-  if (minor !== minMinor) {
-    return minor > minMinor;
-  }
-
-  return patch >= minPatch;
-}
-
-function warnDeprecation(loaderContext, type, exports) {
-  if (!supportsNativeExports(loaderContext)) {
-    return;
-  }
-
-  const value = {};
-
-  for (const { syntax, name, alias } of exports) {
-    // the option has one name for the module's own value, whatever the format
-    const exportName =
-      syntax === "default" || syntax === "single" ? "default" : alias || name;
-
-    value[exportName] = name;
-  }
-
-  const names = Object.keys(value);
-  const isShorthand = names.every((name) => value[name] === name);
-  const option = JSON.stringify(
-    isShorthand ? (names.length === 1 ? names[0] : names) : value,
-  );
-  // a script gets CommonJs exports, so ES module exports ask for the ES module type
-  const moduleType = type === "module" ? '\n    type: "javascript/esm",' : "";
-  const message = `"exports-loader" is deprecated, webpack adds exports itself since v${NATIVE_EXPORTS_WEBPACK_VERSION.join(".")}.
-Replace the loader in the rule with the "exports" parser option:
-
-  {
-    test: /\\.js$/,${moduleType}
-    parser: { exports: ${option} }
-  }
-
-More information: https://github.com/webpack/exports-loader#deprecation`;
+A plugin can append it on webpack's "NormalModule" "processResult" hook, without a loader:
+${EXAMPLE_URL}`;
 
   const compilation = loaderContext._compilation;
 

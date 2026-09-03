@@ -24,9 +24,9 @@ export default function loader(content, sourceMap) {
     return;
   }
 
-  warnDeprecation(this, type, exports);
-
   const exportsCode = renderExports(this, type, exports);
+
+  warnDeprecation(this, exportsCode);
 
   if (this.sourceMap && sourceMap) {
     const node = SourceNode.fromStringWithSourceMap(
