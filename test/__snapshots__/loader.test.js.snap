@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`loader should not work with source maps when the "devtool" options are disabled: errors 1`] = `[]`;
 
@@ -39,7 +39,12 @@ exports[`loader should not work with source maps when the "devtool" options are 
 }
 `;
 
-exports[`loader should not work with source maps when the "devtool" options are disabled: warnings 1`] = `[]`;
+exports[`loader should not work with source maps when the "devtool" options are disabled: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with inline syntax: errors 1`] = `[]`;
 
@@ -168,7 +173,24 @@ exports[`loader should work with inline syntax: result 1`] = `
 }
 `;
 
-exports[`loader should work with inline syntax: warnings 1`] = `[]`;
+exports[`loader should work with inline syntax: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with multiple object and string values: errors 1`] = `[]`;
 
@@ -229,7 +251,12 @@ exports[`loader should work with multiple object and string values: result 1`] =
 }
 `;
 
-exports[`loader should work with multiple object and string values: warnings 1`] = `[]`;
+exports[`loader should work with multiple object and string values: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with multiple string values: errors 1`] = `[]`;
 
@@ -285,7 +312,12 @@ exports[`loader should work with multiple string values: result 1`] = `
 }
 `;
 
-exports[`loader should work with multiple string values: warnings 1`] = `[]`;
+exports[`loader should work with multiple string values: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with object value (syntax, name and alias): errors 1`] = `[]`;
 
@@ -332,7 +364,12 @@ exports[`loader should work with object value (syntax, name and alias): result 1
 }
 `;
 
-exports[`loader should work with object value (syntax, name and alias): warnings 1`] = `[]`;
+exports[`loader should work with object value (syntax, name and alias): warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with object value with "default" syntax: errors 1`] = `[]`;
 
@@ -377,7 +414,12 @@ exports[`loader should work with object value with "default" syntax: result 1`] 
 }
 `;
 
-exports[`loader should work with object value with "default" syntax: warnings 1`] = `[]`;
+exports[`loader should work with object value with "default" syntax: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with object value: errors 1`] = `[]`;
 
@@ -424,7 +466,12 @@ exports[`loader should work with object value: result 1`] = `
 }
 `;
 
-exports[`loader should work with object value: warnings 1`] = `[]`;
+exports[`loader should work with object value: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with source maps when the "devtool" option is enabled: errors 1`] = `[]`;
 
@@ -459,7 +506,12 @@ export {
 
 exports[`loader should work with source maps when the "devtool" option is enabled: result 1`] = `{}`;
 
-exports[`loader should work with source maps when the "devtool" option is enabled: warnings 1`] = `[]`;
+exports[`loader should work with source maps when the "devtool" option is enabled: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with string value: errors 1`] = `[]`;
 
@@ -506,7 +558,12 @@ exports[`loader should work with string value: result 1`] = `
 }
 `;
 
-exports[`loader should work with string value: warnings 1`] = `[]`;
+exports[`loader should work with string value: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "commonjs" module format for "    " export list: errors 1`] = `
 [
@@ -571,7 +628,12 @@ exports[`loader should work with the "commonjs" module format for "   Foo   " ex
 }
 `;
 
-exports[`loader should work with the "commonjs" module format for "   Foo   " export list: warnings 1`] = `[]`;
+exports[`loader should work with the "commonjs" module format for "   Foo   " export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "commonjs" module format for "  " export list: errors 1`] = `
 [
@@ -598,7 +660,12 @@ File was processed with these loaders:",
 ]
 `;
 
-exports[`loader should work with the "commonjs" module format for "\`invalid\`" export list: warnings 1`] = `[]`;
+exports[`loader should work with the "commonjs" module format for "\`invalid\`" export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "commonjs" module format for "Foo" export list: errors 1`] = `[]`;
 
@@ -645,7 +712,12 @@ exports[`loader should work with the "commonjs" module format for "Foo" export l
 }
 `;
 
-exports[`loader should work with the "commonjs" module format for "Foo" export list: warnings 1`] = `[]`;
+exports[`loader should work with the "commonjs" module format for "Foo" export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "commonjs" module format for "default Foo" export list: errors 1`] = `
 [
@@ -663,7 +735,12 @@ File was processed with these loaders:",
 ]
 `;
 
-exports[`loader should work with the "commonjs" module format for "default" export list: warnings 1`] = `[]`;
+exports[`loader should work with the "commonjs" module format for "default" export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "commonjs" module format for "multiple   Foo" export list: errors 1`] = `
 [
@@ -719,7 +796,12 @@ exports[`loader should work with the "commonjs" module format for "multiple Foo 
 }
 `;
 
-exports[`loader should work with the "commonjs" module format for "multiple Foo Foo-Bar" export list: warnings 1`] = `[]`;
+exports[`loader should work with the "commonjs" module format for "multiple Foo Foo-Bar" export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "commonjs" module format for "multiple Foo FooA FooB" export list: errors 1`] = `
 [
@@ -775,7 +857,12 @@ exports[`loader should work with the "commonjs" module format for "multiple Foo 
 }
 `;
 
-exports[`loader should work with the "commonjs" module format for "multiple Foo FooA" export list: warnings 1`] = `[]`;
+exports[`loader should work with the "commonjs" module format for "multiple Foo FooA" export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "commonjs" module format for "multiple Foo" export list: errors 1`] = `[]`;
 
@@ -822,7 +909,12 @@ exports[`loader should work with the "commonjs" module format for "multiple Foo"
 }
 `;
 
-exports[`loader should work with the "commonjs" module format for "multiple Foo" export list: warnings 1`] = `[]`;
+exports[`loader should work with the "commonjs" module format for "multiple Foo" export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "commonjs" module format for "multiple|Foo" export list: errors 1`] = `[]`;
 
@@ -869,7 +961,12 @@ exports[`loader should work with the "commonjs" module format for "multiple|Foo"
 }
 `;
 
-exports[`loader should work with the "commonjs" module format for "multiple|Foo" export list: warnings 1`] = `[]`;
+exports[`loader should work with the "commonjs" module format for "multiple|Foo" export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "commonjs" module format for "multiple|Foo|FooA" export list: errors 1`] = `[]`;
 
@@ -916,7 +1013,12 @@ exports[`loader should work with the "commonjs" module format for "multiple|Foo|
 }
 `;
 
-exports[`loader should work with the "commonjs" module format for "multiple|Foo|FooA" export list: warnings 1`] = `[]`;
+exports[`loader should work with the "commonjs" module format for "multiple|Foo|FooA" export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "commonjs" module format for "named Foo" export list: errors 1`] = `
 [
@@ -977,7 +1079,12 @@ exports[`loader should work with the "commonjs" module format for "single Foo" e
 }
 `;
 
-exports[`loader should work with the "commonjs" module format for "single Foo" export list: warnings 1`] = `[]`;
+exports[`loader should work with the "commonjs" module format for "single Foo" export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "commonjs" module format for "single single" export list: errors 1`] = `[]`;
 
@@ -1016,7 +1123,12 @@ module.exports = single;
 
 exports[`loader should work with the "commonjs" module format for "single single" export list: result 1`] = `"single"`;
 
-exports[`loader should work with the "commonjs" module format for "single single" export list: warnings 1`] = `[]`;
+exports[`loader should work with the "commonjs" module format for "single single" export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "commonjs" module format for "unknown Foo" export list: errors 1`] = `
 [
@@ -1081,7 +1193,12 @@ exports[`loader should work with the "commonjs" module format for ["Foo","Bar"] 
 }
 `;
 
-exports[`loader should work with the "commonjs" module format for ["Foo","Bar"] export list: warnings 1`] = `[]`;
+exports[`loader should work with the "commonjs" module format for ["Foo","Bar"] export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "commonjs" module format for ["multiple Foo Bar","multiple Bar"] export list: errors 1`] = `
 [
@@ -1155,7 +1272,12 @@ exports[`loader should work with the "commonjs" module format for ["multiple Foo
 }
 `;
 
-exports[`loader should work with the "commonjs" module format for ["multiple Foo FooA","multiple Bar BarA"] export list: warnings 1`] = `[]`;
+exports[`loader should work with the "commonjs" module format for ["multiple Foo FooA","multiple Bar BarA"] export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "commonjs" module format for ["multiple Foo","multiple Bar Foo"] export list: errors 1`] = `
 [
@@ -1220,7 +1342,12 @@ exports[`loader should work with the "commonjs" module format for ["multiple Foo
 }
 `;
 
-exports[`loader should work with the "commonjs" module format for ["multiple Foo","multiple Bar"] export list: warnings 1`] = `[]`;
+exports[`loader should work with the "commonjs" module format for ["multiple Foo","multiple Bar"] export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "commonjs" module format for ["multiple Foo","multiple Foo"] export list: errors 1`] = `
 [
@@ -1292,7 +1419,12 @@ exports[`loader should work with the "commonjs" module format for ["multiple myV
 }
 `;
 
-exports[`loader should work with the "commonjs" module format for ["multiple myVariable.myFunction myFunction","multiple Bar BarA"] export list: warnings 1`] = `[]`;
+exports[`loader should work with the "commonjs" module format for ["multiple myVariable.myFunction myFunction","multiple Bar BarA"] export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "commonjs" module format for ["multiple myVariable.myFunction","multiple Bar myVariable.myFunction"] export list: errors 1`] = `
 [
@@ -1402,7 +1534,12 @@ exports[`loader should work with the "module" module format for "   Foo   " expo
 }
 `;
 
-exports[`loader should work with the "module" module format for "   Foo   " export list: warnings 1`] = `[]`;
+exports[`loader should work with the "module" module format for "   Foo   " export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "module" module format for "  " export list: errors 1`] = `
 [
@@ -1429,7 +1566,12 @@ File was processed with these loaders:",
 ]
 `;
 
-exports[`loader should work with the "module" module format for "\`invalid\`" export list: warnings 1`] = `[]`;
+exports[`loader should work with the "module" module format for "\`invalid\`" export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "module" module format for "Foo" export list: errors 1`] = `[]`;
 
@@ -1476,7 +1618,12 @@ exports[`loader should work with the "module" module format for "Foo" export lis
 }
 `;
 
-exports[`loader should work with the "module" module format for "Foo" export list: warnings 1`] = `[]`;
+exports[`loader should work with the "module" module format for "Foo" export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "module" module format for "default Foo FooA" export list: errors 1`] = `
 [
@@ -1530,7 +1677,12 @@ exports[`loader should work with the "module" module format for "default Foo" ex
 }
 `;
 
-exports[`loader should work with the "module" module format for "default Foo" export list: warnings 1`] = `[]`;
+exports[`loader should work with the "module" module format for "default Foo" export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "module" module format for "default default" export list: errors 1`] = `
 [
@@ -1539,7 +1691,12 @@ File was processed with these loaders:",
 ]
 `;
 
-exports[`loader should work with the "module" module format for "default default" export list: warnings 1`] = `[]`;
+exports[`loader should work with the "module" module format for "default default" export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "module" module format for "default" export list: errors 1`] = `
 [
@@ -1548,7 +1705,12 @@ File was processed with these loaders:",
 ]
 `;
 
-exports[`loader should work with the "module" module format for "default" export list: warnings 1`] = `[]`;
+exports[`loader should work with the "module" module format for "default" export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "module" module format for "multiple Foo" export list: errors 1`] = `
 [
@@ -1613,7 +1775,12 @@ exports[`loader should work with the "module" module format for "named Foo FooA"
 }
 `;
 
-exports[`loader should work with the "module" module format for "named Foo FooA" export list: warnings 1`] = `[]`;
+exports[`loader should work with the "module" module format for "named Foo FooA" export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "module" module format for "named Foo" export list: errors 1`] = `[]`;
 
@@ -1660,7 +1827,12 @@ exports[`loader should work with the "module" module format for "named Foo" expo
 }
 `;
 
-exports[`loader should work with the "module" module format for "named Foo" export list: warnings 1`] = `[]`;
+exports[`loader should work with the "module" module format for "named Foo" export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "module" module format for "named|Foo" export list: errors 1`] = `[]`;
 
@@ -1707,7 +1879,12 @@ exports[`loader should work with the "module" module format for "named|Foo" expo
 }
 `;
 
-exports[`loader should work with the "module" module format for "named|Foo" export list: warnings 1`] = `[]`;
+exports[`loader should work with the "module" module format for "named|Foo" export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "module" module format for "named|Foo|FooA" export list: errors 1`] = `[]`;
 
@@ -1754,7 +1931,12 @@ exports[`loader should work with the "module" module format for "named|Foo|FooA"
 }
 `;
 
-exports[`loader should work with the "module" module format for "named|Foo|FooA" export list: warnings 1`] = `[]`;
+exports[`loader should work with the "module" module format for "named|Foo|FooA" export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "module" module format for "single Foo" export list: errors 1`] = `
 [
@@ -1828,7 +2010,12 @@ exports[`loader should work with the "module" module format for ["Foo","Bar"] ex
 }
 `;
 
-exports[`loader should work with the "module" module format for ["Foo","Bar"] export list: warnings 1`] = `[]`;
+exports[`loader should work with the "module" module format for ["Foo","Bar"] export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "module" module format for ["default Foo","default Bar"] export list: errors 1`] = `
 [
@@ -1898,7 +2085,12 @@ exports[`loader should work with the "module" module format for ["default Foo","
 }
 `;
 
-exports[`loader should work with the "module" module format for ["default Foo","named Bar BarA","named Baz"] export list: warnings 1`] = `[]`;
+exports[`loader should work with the "module" module format for ["default Foo","named Bar BarA","named Baz"] export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "module" module format for ["default Foo","named Bar BarA"] export list: errors 1`] = `[]`;
 
@@ -1954,7 +2146,12 @@ exports[`loader should work with the "module" module format for ["default Foo","
 }
 `;
 
-exports[`loader should work with the "module" module format for ["default Foo","named Bar BarA"] export list: warnings 1`] = `[]`;
+exports[`loader should work with the "module" module format for ["default Foo","named Bar BarA"] export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "module" module format for ["default Foo","named Bar"] export list: errors 1`] = `[]`;
 
@@ -2010,7 +2207,12 @@ exports[`loader should work with the "module" module format for ["default Foo","
 }
 `;
 
-exports[`loader should work with the "module" module format for ["default Foo","named Bar"] export list: warnings 1`] = `[]`;
+exports[`loader should work with the "module" module format for ["default Foo","named Bar"] export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "module" module format for ["named Foo Bar","named Bar"] export list: errors 1`] = `
 [
@@ -2084,7 +2286,12 @@ exports[`loader should work with the "module" module format for ["named Foo FooA
 }
 `;
 
-exports[`loader should work with the "module" module format for ["named Foo FooA","named Bar BarA"] export list: warnings 1`] = `[]`;
+exports[`loader should work with the "module" module format for ["named Foo FooA","named Bar BarA"] export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "module" module format for ["named Foo default","named Bar BarA"] export list: errors 1`] = `[]`;
 
@@ -2140,7 +2347,12 @@ exports[`loader should work with the "module" module format for ["named Foo defa
 }
 `;
 
-exports[`loader should work with the "module" module format for ["named Foo default","named Bar BarA"] export list: warnings 1`] = `[]`;
+exports[`loader should work with the "module" module format for ["named Foo default","named Bar BarA"] export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "module" module format for ["named Foo","named Bar Foo"] export list: errors 1`] = `
 [
@@ -2205,7 +2417,12 @@ exports[`loader should work with the "module" module format for ["named Foo","na
 }
 `;
 
-exports[`loader should work with the "module" module format for ["named Foo","named Bar"] export list: warnings 1`] = `[]`;
+exports[`loader should work with the "module" module format for ["named Foo","named Bar"] export list: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
 
 exports[`loader should work with the "module" module format for ["named Foo","named Foo"] export list: errors 1`] = `
 [

@@ -209,4 +209,42 @@ function renderExports(loaderContext, type, exports) {
   return code;
 }
 
-export { getExports, renderExports };
+const EXAMPLE_URL =
+  "https://github.com/webpack/webpack/tree/main/examples/add-exports";
+
+const warnedCompilations = new WeakMap();
+
+function warnDeprecation(loaderContext, code) {
+  const message = `"exports-loader" is deprecated. It appends this to the module:
+
+${code
+  .split("\n")
+  .filter(Boolean)
+  .map((line) => `  ${line}`)
+  .join("\n")}
+
+A plugin can append it on webpack's "NormalModule" "processResult" hook, without a loader:
+${EXAMPLE_URL}`;
+
+  const compilation = loaderContext._compilation;
+
+  // one warning per rule, not per module the rule matched
+  if (compilation) {
+    let messages = warnedCompilations.get(compilation);
+
+    if (!messages) {
+      messages = new Set();
+      warnedCompilations.set(compilation, messages);
+    }
+
+    if (messages.has(message)) {
+      return;
+    }
+
+    messages.add(message);
+  }
+
+  loaderContext.emitWarning(new Error(message));
+}
+
+export { getExports, renderExports, warnDeprecation };

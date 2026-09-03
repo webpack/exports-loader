@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`deprecation should print the CommonJs code it appends: errors 1`] = `[]`;
+
+exports[`deprecation should warn and print the code it appends: errors 1`] = `[]`;
+
+exports[`deprecation should warn and print the code it appends: warnings 1`] = `
+[
+  "ModuleWarning: Module Warning (from \`replaced original path\`):
+"exports-loader" is deprecated. It appends this to the module:",
+]
+`;
+
+exports[`deprecation should warn once per rule, not once per module: errors 1`] = `[]`;

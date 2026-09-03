@@ -13,6 +13,10 @@
 
 # exports-loader
 
+> [!CAUTION]
+>
+> This loader is deprecated. What it does is a few lines of plugin over webpack's public API — see [Deprecation](#deprecation) for the recipe.
+
 Allows you to set up exports using `module.exports` or `export` for source files.
 
 Useful when a source file does not contain exports or when something is not exported.
@@ -26,6 +30,63 @@ For more information on compatibility issues, refer to the [Shimming](https://we
 > [!WARNING]
 >
 > Be careful: modifying existing exports (`export`, `module.exports`, or `exports`) or adding new exports can lead to errors.
+
+## Deprecation
+
+This loader is deprecated and only receives bug fixes from now on. What it does — appending exports to a file that has none — is a few lines of plugin over webpack's public API, so it does not need a package. Running it prints a warning with the exact code it appends and a link to the example below.
+
+webpack's [add-exports example](https://github.com/webpack/webpack/tree/main/examples/add-exports) is the whole recipe. `NormalModule`'s `processResult` hook hands a plugin what the loaders produced and takes back a replacement:
+
+```js
+const { NormalModule } = require("webpack");
+
+class AddExportsPlugin {
+  constructor(exports) {
+    this.exports = exports;
+  }
+
+  apply(compiler) {
+    compiler.hooks.compilation.tap("AddExportsPlugin", (compilation) => {
+      NormalModule.getCompilationHooks(compilation).processResult.tap(
+        "AddExportsPlugin",
+        (result, module) => {
+          const [source, sourceMap] = result;
+
+          for (const [test, code] of this.exports) {
+            if (!module.resource || !test.test(module.resource)) continue;
+
+            // appending moves nothing before it, so the source map still fits;
+            // an ast from a loader would be parsed instead of the appended code
+            return [`${source}\n${code}`, sourceMap, undefined];
+          }
+
+          return result;
+        },
+      );
+    });
+  }
+}
+```
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  plugins: [
+    new AddExportsPlugin([
+      [/vendor\.js$/, "module.exports = Foo;"],
+      [/math\.js$/, "export { add, PI };"],
+    ]),
+  ],
+};
+```
+
+The code to append is the code this loader generates, which its warning prints — `module.exports = Foo;` for `{ type: "commonjs", exports: "single Foo" }`, `export { Foo };` for `{ exports: "Foo" }`, and so on. Two things follow from webpack parsing it itself:
+
+- The exports are the module's own, so they take part in tree shaking, mangling, const inlining and scope hoisting.
+- Appending an `export` is what makes a file an ES module, exactly as it would be in the source, so there is no `type` to choose — write the format the file should have.
+
+Inline usage (`exports-loader?exports=Foo!./file.js`) has no counterpart: the plugin matches on the resource, so use a condition on the path instead.
 
 ## Getting Started
 
