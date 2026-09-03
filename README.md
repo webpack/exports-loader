@@ -84,9 +84,10 @@ module.exports = {
 
 The option is also available for every module at once, as `module.parser.javascript.exports`.
 
-Three things behave better afterwards, and one has no equivalent:
+Four things behave better afterwards, and one has no equivalent:
 
 - The exports enter the module graph instead of the source, so ES module exports take part in tree shaking, mangling, const inlining and scope hoisting, and an unused CommonJs export is dropped from the generated object.
+- Named exports are added to the module's exports rather than replacing them, so a file that exports something itself — an AMD `define`, an `exports.x`, its own `module.exports =` — keeps it. The loader's generated `module.exports = { … }` overwrites all three.
 - A name the module does not declare is a build error instead of code that throws at runtime, and an expression that is not an identifier or a member expression (`Foo.Bar`) is rejected rather than spliced into the output.
 - An ES module export accepts what the generated `export { … }` could not: a member expression (`{ create: "Widget.create" }`) and an export name that is not an identifier (`{ "Foo-Bar": "Foo" }`).
 - Inline usage (`exports-loader?exports=Foo!./file.js`) has no counterpart — the option is set on a rule, so match the file with `test`, `include` or `resourceQuery` instead.
